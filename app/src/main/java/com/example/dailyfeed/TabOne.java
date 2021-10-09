@@ -86,27 +86,30 @@ public class TabOne extends Fragment implements SwipeRefreshLayout.OnRefreshList
     private void loadRecyclerViewData() {
         swipeRefreshLayout.setRefreshing(true);
         country = sp.getString("countryname", "in");
-        REQUEST_URL = "https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=bfdf3e0e5847437facbf4092ba190098";
+        //REQUEST_URL = "https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=bfdf3e0e5847437facbf4092ba190098";
+        REQUEST_URL = "https://newsdata.io/api/1/news?apikey=pub_1681f97540bf4c9eda3e4933b8dbbb84c322&country="+country;
         Log.i("YAY", "COUNTRY TAB ONE-->" + country);
         Log.i("YAY", "URL TAB ONE-->" + REQUEST_URL);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, REQUEST_URL, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,REQUEST_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
                     JSONObject baseobject = new JSONObject(response);
-                    JSONArray articles = baseobject.getJSONArray("articles");
+                    JSONArray articles = baseobject.getJSONArray("results");
 
                     for (int i = 0; i < articles.length(); i++) {
                         JSONObject jsonObject = articles.getJSONObject(i);
-//                        Log.i("DEV", String.valueOf(jsonObject));
+                        Log.i("YAY", String.valueOf(jsonObject));
                         ListItems listItem = new ListItems(jsonObject.getString("title"),
                                 jsonObject.getString("description"),
-                                jsonObject.getString("urlToImage"),
-                                jsonObject.getString("url"),
-                                jsonObject.getString("publishedAt"));
+                                jsonObject.getString("image_url"),
+                                jsonObject.getString("link"),
+                                jsonObject.getString("pubDate"));
                         listItems.add(listItem);
+                        Log.i("YAY", String.valueOf(listItem));
                     }
+
 
                     NewsAdapter newsAdapter = new NewsAdapter(listItems, getActivity());
                     recyclerView.setAdapter(newsAdapter);
@@ -124,13 +127,13 @@ public class TabOne extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
             }
         }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String,String> params=new HashMap<>();
-//                params.put("country","us");
-//
-//                return  params;
-//            }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params=new HashMap<>();
+                params.put("Content-Type", "application/json");
+    //            params.put("country","us");
+                return  params;
+            }
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

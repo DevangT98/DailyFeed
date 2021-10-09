@@ -1,5 +1,6 @@
 package com.example.dailyfeed;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -53,7 +54,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final ListItems listItem = listItems.get(position);
         holder.heading.setText(listItem.getmHeading());
         holder.description.setText(listItem.getmDescription());
