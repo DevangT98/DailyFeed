@@ -2,7 +2,7 @@
 
 DailyFeed news app provides the latest news and happenings around the world and is a feature-rich application!
 
-*News data is obtained from www.newsapi.org.*
+*News data is obtained from www.newsdata.io.*
 
 # Functionalities:
 1. Add to favourites/like to view it later
